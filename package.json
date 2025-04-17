@@ -52,5 +52,13 @@
   "dependencies": {
     "@beenotung/tslib": "^24.6.2",
     "cast.ts": "^1.17.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beenotung/zhconvert.ts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/beenotung/zhconvert.ts/issues"
+  },
+  "homepage": "https://github.com/beenotung/zhconvert.ts#readme"
 }

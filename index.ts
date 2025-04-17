@@ -30,22 +30,26 @@ let zhConvertResultParser = object({
   revisions: object({ build: string(), msg: string() }),
 })
 
+export type ConvertResult = ParseResult<typeof zhConvertResultParser>
+
 export async function translateIntoTraditional(zh_cn: string): Promise<string> {
-  return translate({ text: zh_cn, converter: 'Traditional' })
+  if (zh_cn.trim() === '') return zh_cn
+  let result = await translate({ text: zh_cn, converter: 'Traditional' })
+  return result.data.text
 }
 
 export async function translateIntoSimplified(zh_hk: string): Promise<string> {
-  return translate({ text: zh_hk, converter: 'Simplified' })
+  if (zh_hk.trim() === '') return zh_hk
+  let result = await translate({ text: zh_hk, converter: 'Simplified' })
+  return result.data.text
 }
 
 export async function translate(input: { text: string; converter: Converter }) {
   let { text, converter } = input
 
-  if (text.trim() === '') return text
-
   // use task queue to avoid overload the external service with concurrent requests
-  return zhTaskQueue.runTask(() => {
-    return fetch('https://api.zhconvert.org/convert', {
+  return zhTaskQueue.runTask(() =>
+    fetch('https://api.zhconvert.org/convert', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -53,9 +57,6 @@ export async function translate(input: { text: string; converter: Converter }) {
       body: JSON.stringify({ text, converter }),
     })
       .then(res => res.json())
-      .then(json => zhConvertResultParser.parse(json).data.text)
-      .then(zh_hk => {
-        return zh_hk
-      })
-  })
+      .then(json => zhConvertResultParser.parse(json)),
+  )
 }

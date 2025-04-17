@@ -1,6 +1,6 @@
 {
   "name": "zhconvert.ts",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Convert traditional Chinese / simplified Chinese with zhconvert.org API | 使用繁化姬 API 轉換繁體中文／簡體中文",
   "main": "dist/index.js",
   "scripts": {

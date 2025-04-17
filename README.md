@@ -24,11 +24,50 @@ You can also install `zhconvert.ts` with [pnpm](https://pnpm.io/), [yarn](https:
 ## Usage Example
 
 ```typescript
-import {} from 'zhconvert.ts'
+import { translateIntoSimplified, translateIntoTraditional } from 'zhconvert.ts'
+
+// Convert Simplified Chinese to Traditional Chinese (HK)
+let zh_cn = '干，快干杯，芒果干好吃干他什么事，别干扰我吃芒果干'
+let result = await translateIntoTraditional(zh_cn)
+// result: '幹，快乾杯，芒果乾好吃干他什麼事，別干擾我吃芒果乾'
+
+// Convert Traditional Chinese to Simplified Chinese
+let zh_hk = '幹，快乾杯，芒果乾好吃干他什麼事，別干擾我吃芒果乾'
+let result2 = await translateIntoSimplified(zh_hk)
+// result2: '干，快干杯，芒果干好吃干他什么事，别干扰我吃芒果干'
+
+// Advanced usage with custom converter
+import { translate, Converter } from 'zhconvert.ts'
+await translate({
+  text: '你好',
+  converter: 'Taiwan', // Convert to Taiwan style
+})
 ```
 
 ## Typescript Signature
 
 ```typescript
+// 繁體化: Convert Simplified Chinese to Traditional Chinese
+export function translateIntoTraditional(zh_cn: string): Promise<string>
 
+// 簡體化: Convert Traditional Chinese to Simplified Chinese
+export function translateIntoSimplified(zh_hk: string): Promise<string>
+
+// Convert to other styles
+export function translate(input: {
+  text: string
+  converter: Converter
+}): Promise<string>
+
+export type Converter =
+  | 'Simplified' // 簡體化
+  | 'Traditional' // 繁體化
+  | 'China' // 中國化
+  | 'Hongkong' // 香港化
+  | 'Taiwan' // 台灣化
+  | 'Pinyin' // 拼音化
+  | 'Bopomofo' // 注音化
+  | 'Mars' // 火星化
+  | 'WikiSimplified' // 維基簡體化
+  | 'WikiTraditional' // 維基繁體化
 ```
